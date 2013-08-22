@@ -20,10 +20,9 @@
 	<parent>
 		<artifactId>api2</artifactId>
 		<groupId>eu.europeana</groupId>
-		<version>2.0.6</version>
+		<version>2.0.6.p1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>eu.europeana.api2</groupId>
