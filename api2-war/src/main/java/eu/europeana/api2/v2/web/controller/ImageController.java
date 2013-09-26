@@ -37,6 +37,7 @@ import eu.europeana.corelib.db.exception.DatabaseException;
 import eu.europeana.corelib.db.service.ThumbnailService;
 import eu.europeana.corelib.definitions.model.ThumbSize;
 import eu.europeana.corelib.definitions.solr.beans.FullBean;
+import eu.europeana.corelib.solr.exceptions.MongoDBException;
 import eu.europeana.corelib.solr.exceptions.SolrTypeException;
 import eu.europeana.corelib.solr.service.SearchService;
 
@@ -78,7 +79,7 @@ public class ImageController {
 					image = DefaultImageCache.getImage(bean.getType());
 					mediaType = MediaType.IMAGE_GIF;
 				}
-			} catch (SolrTypeException e) {
+			} catch (MongoDBException e) {
 				// ignore and image for unknown
 			}
 		}

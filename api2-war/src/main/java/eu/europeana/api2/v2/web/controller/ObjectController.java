@@ -59,6 +59,7 @@ import eu.europeana.corelib.definitions.solr.beans.BriefBean;
 import eu.europeana.corelib.definitions.solr.beans.FullBean;
 import eu.europeana.corelib.logging.Log;
 import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
+import eu.europeana.corelib.solr.exceptions.MongoDBException;
 import eu.europeana.corelib.solr.exceptions.SolrTypeException;
 import eu.europeana.corelib.solr.service.SearchService;
 import eu.europeana.corelib.solr.utils.EDMUtils;
@@ -141,8 +142,11 @@ public class ObjectController {
 			long t0 = (new Date()).getTime();
 			FullBean bean = searchService.findById(europeanaObjectId,true);
 			if (bean == null) {
-				bean = searchService
-						.resolve(europeanaObjectId,true);
+				try {
+					bean = searchService.resolve(europeanaObjectId,true);
+				} catch (SolrTypeException e) {
+					// e.printStackTrace();
+				}
 			}
 
 			if (bean == null) {
@@ -179,7 +183,7 @@ public class ObjectController {
 			objectResult.statsDuration = (t1 - t0);
 			apiLogService.logApiRequest(wskey, requestUri, RecordType.OBJECT,
 					profile);
-		} catch (SolrTypeException e) {
+		} catch (MongoDBException e) {
 			return JsonUtils.toJson(new ApiError(wskey, "record.json", e.getMessage(),
 					requestNumber), callback);
 		}
@@ -243,6 +247,8 @@ public class ObjectController {
 			if (bean == null) {
 				bean = (FullBeanImpl) searchService.resolve(europeanaObjectId,true);
 			}
+		} catch (MongoDBException e) {
+			log.error(ExceptionUtils.getFullStackTrace(e));
 		} catch (SolrTypeException e) {
 			log.error(ExceptionUtils.getFullStackTrace(e));
 		}

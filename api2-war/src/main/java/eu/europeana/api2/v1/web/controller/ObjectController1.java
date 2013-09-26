@@ -32,6 +32,7 @@ import eu.europeana.corelib.definitions.exception.ProblemType;
 import eu.europeana.corelib.definitions.solr.beans.FullBean;
 import eu.europeana.corelib.logging.Log;
 import eu.europeana.corelib.solr.exceptions.EuropeanaQueryException;
+import eu.europeana.corelib.solr.exceptions.MongoDBException;
 import eu.europeana.corelib.solr.exceptions.SolrTypeException;
 import eu.europeana.corelib.solr.service.SearchService;
 
@@ -90,7 +91,7 @@ public class ObjectController1 {
 				response.setStatus(404);
 				return JsonUtils.toJson(new ApiError(wskey, "record.json", "not found error"), callback);
 			}
-		} catch (SolrTypeException e) {
+		} catch (MongoDBException e) {
 			response.setStatus(500);
 			return JsonUtils.toJson(new ApiError(wskey, "record.json", e.getMessage()), callback);
 		}
@@ -140,7 +141,7 @@ public class ObjectController1 {
 				createXml(srwResponse);
 				log.info("xml created");
 				return srwResponse;
-			} catch (SolrTypeException e) {
+			} catch (MongoDBException e) {
 				// model.put("json", utils.toJson(new ApiError(wskey, "record.json", e.getMessage())));
 				response.setStatus(500);
 				return null;
